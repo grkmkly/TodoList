@@ -19,8 +19,8 @@ const inputValue = document.querySelector("#todoName");
 
 
 
-var i = 0;
 
+var i = 0;
 addButton.addEventListener("click", function () {
 
     if(inputValue.value == ""){
@@ -47,7 +47,7 @@ addButton.addEventListener("click", function () {
     pItem.innerHTML = inputValue.value ;
  
 
-    closeItem.className = "p-0 m-0 ms-auto d-inline";
+    closeItem.className = "p-0 m-0 ms-auto d-inline close ";
     closeItem.setAttribute("style","cursor: pointer");
     closeItem.textContent = "X";
 
@@ -56,7 +56,7 @@ addButton.addEventListener("click", function () {
     inputItem.id = `flexCheckDefault${i}` ;
     inputItem.value = "";
 
-    liItem.className = "list-group-item  bg-transparent text-danger d-flex mx-2 p-1 align-items-center";
+    liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
     i++;
     inputValue.value = "";
 });
@@ -74,6 +74,16 @@ resetButton.addEventListener("click" ,function(){
         }
     }
 });
+
+inputGroup.addEventListener("click",function(e){
+    console.log(e.target);
+    if(e.target.textContent === "X"){
+        const removeElement = e.target.parentElement;
+        removeElement.remove();
+    }
+
+})
+
 
 
 // addButton.addEventListener("click", function () {
