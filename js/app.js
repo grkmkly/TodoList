@@ -17,10 +17,75 @@ const inputValue = document.querySelector("#todoName");
 
 
 
-
-
-
 var i = 0;
+
+window.onload = function(){
+
+    while(localStorage.getItem(i) != null){
+
+        const liItem = document.createElement("li");
+        const inputItem = document.createElement("input");
+        const labelItem = document.createElement("label");
+        const pItem = document.createElement("p");
+        const closeItem = document.createElement("p");
+
+        inputGroup.appendChild(liItem);
+        liItem.appendChild(inputItem);
+        liItem.appendChild(labelItem);
+        liItem.appendChild(pItem);
+        liItem.appendChild(closeItem);
+
+        labelItem.className = "form-check-label";
+        labelItem.for = "flexCheckDefault";
+
+        pItem.className = "p-0 m-0 ms-2 d-inline";
+        pItem.innerHTML = localStorage.getItem(i) ;
+ 
+
+        closeItem.className = "p-0 m-0 ms-auto d-inline close ";
+        closeItem.setAttribute("style","cursor: pointer");
+        closeItem.textContent = "X";
+
+        inputItem.className = "form-check-input";
+        inputItem.type = "checkbox";
+        inputItem.id = `flexCheckDefault${i}` ;
+        inputItem.value = "";
+
+        liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
+        i++;
+        
+    }
+
+}
+
+resetButton.addEventListener("click" ,function(){
+    var todos = document.querySelectorAll(".list-group-item");
+
+    console.log(todos);
+    if(todos === null){
+        alert("No element");
+    }
+    else{
+        while(i>0){
+            --i;
+            todos[i].remove();
+            localStorage.removeItem(i);
+        }
+        return;
+    }
+
+});
+inputGroup.addEventListener("click",function(e){
+    console.log(e.target);
+    if(e.target.className === "p-0 m-0 ms-auto d-inline close "){
+        const removeElement = e.target.parentElement;
+        removeElement.remove();
+        --i;
+        localStorage.removeItem(i);
+        console.log(i);
+    }
+});
+
 addButton.addEventListener("click", function () {
 
     if(inputValue.value == ""){
@@ -57,32 +122,12 @@ addButton.addEventListener("click", function () {
     inputItem.value = "";
 
     liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
+
+    localStorage.setItem(i,inputValue.value)
+    inputValue.value = ""; 
     i++;
-    inputValue.value = "";
+    
 });
-resetButton.addEventListener("click" ,function(){
-    const todos = document.querySelectorAll(".list-group-item");
-    console.log(todos);
-    if(todos == null){
-        alert("No element");
-        return;
-    }
-    else{
-        while(i>0){
-            todos[i-1].remove();
-            i--;
-        }
-    }
-});
-
-inputGroup.addEventListener("click",function(e){
-    console.log(e.target);
-    if(e.target.textContent === "X"){
-        const removeElement = e.target.parentElement;
-        removeElement.remove();
-    }
-
-})
 
 
 
