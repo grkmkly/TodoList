@@ -15,12 +15,18 @@ const resetButton = document.querySelector("#resetButton");
 const inputGroup = document.querySelector("ul");
 const inputValue = document.querySelector("#todoName");
 
-
-
 var i = 0;
+runEvents();
+function runEvents()
+{
+    checktheLocalStorage();
+    addButton.addEventListener("click", addTodoUI);
+    resetButton.addEventListener("click" ,resetTodo);
+    inputGroup.addEventListener("click",deleteTodoOne);
+}
 
-window.onload = function(){
 
+function checktheLocalStorage(){
     while(localStorage.getItem(i) != null){
 
         const liItem = document.createElement("li");
@@ -40,7 +46,6 @@ window.onload = function(){
 
         pItem.className = "p-0 m-0 ms-2 d-inline";
         pItem.innerHTML = localStorage.getItem(i) ;
- 
 
         closeItem.className = "p-0 m-0 ms-auto d-inline close ";
         closeItem.setAttribute("style","cursor: pointer");
@@ -48,34 +53,15 @@ window.onload = function(){
 
         inputItem.className = "form-check-input";
         inputItem.type = "checkbox";
-        inputItem.id = `flexCheckDefault${i}` ;
+        inputItem.id = `flexCheckDefault${i}`;
         inputItem.value = "";
 
         liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
-        i++;
-        
+        i++;   
     }
-
 }
 
-resetButton.addEventListener("click" ,function(){
-    var todos = document.querySelectorAll(".list-group-item");
-
-    console.log(todos);
-    if(todos === null){
-        alert("No element");
-    }
-    else{
-        while(i>0){
-            --i;
-            todos[i].remove();
-            localStorage.removeItem(i);
-        }
-        return;
-    }
-
-});
-inputGroup.addEventListener("click",function(e){
+function deleteTodoOne(e,i){
     console.log(e.target);
     if(e.target.className === "p-0 m-0 ms-auto d-inline close "){
         const removeElement = e.target.parentElement;
@@ -84,10 +70,14 @@ inputGroup.addEventListener("click",function(e){
         localStorage.removeItem(i);
         console.log(i);
     }
-});
+}
+function addTodoLocaleStorage(){
+    localStorage.setItem(i,inputValue.value)
+    inputValue.value = ""; 
+    i++;
+}
 
-addButton.addEventListener("click", function () {
-
+function addTodoUI(){
     if(inputValue.value == ""){
         alert("Write Element");
         return;
@@ -116,19 +106,31 @@ addButton.addEventListener("click", function () {
     closeItem.setAttribute("style","cursor: pointer");
     closeItem.textContent = "X";
 
-    inputItem.className = "form-check-input";
+    inputItem.className = "form-check-input flexCheckDefault ";
     inputItem.type = "checkbox";
-    inputItem.id = `flexCheckDefault${i}` ;
+    //inputItem.id = `flexCheckDefault${i}` ;
     inputItem.value = "";
 
     liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
+    addTodoLocaleStorage();
+}
 
-    localStorage.setItem(i,inputValue.value)
-    inputValue.value = ""; 
-    i++;
-    
-});
+function resetTodo(){
+    var todos = document.querySelectorAll(".list-group-item");
 
+    console.log(todos);
+    if(todos === null){
+        alert("No element");
+    }
+    else{
+        while(i>0){
+            --i;
+            todos[i].remove();
+            localStorage.removeItem(i);
+        }
+        return;
+    }
+}
 
 
 // addButton.addEventListener("click", function () {
