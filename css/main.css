@@ -4,3 +4,25 @@
 .bg-h1{
     background-color: #FFE6E6;
 }
+.bg-inputComplete{
+    background-color: #F7DED0;
+    border-radius:5%;
+}
+.bg-addButton{
+    background: #ADBC9F;
+}
+.bg-addButton:hover{
+    background-color:#436850;
+}
+.bg-resetButton{
+    background-color: #FF6D60;
+}
+.bg-resetButton::hover{
+    background-color: #D04848;
+}
+.texting-color{
+    color: #030027;
+}
+.closeItem{
+    color: #CD1818;
+}

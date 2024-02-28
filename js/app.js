@@ -15,13 +15,13 @@ const resetButton = document.querySelector("#resetButton");
 const inputGroup = document.querySelector("ul");
 const inputValue = document.querySelector("#todoName");
 
+
 let todos = [];
 
 
 var i = 0;
-runEvents();
 
-window.load = reloadLocalStorage();
+window.load = reloadLocalStorage() + runEvents();
 
 function runEvents()
 {
@@ -29,9 +29,23 @@ function runEvents()
     addButton.addEventListener("click", addTodoUI);
     resetButton.addEventListener("click" ,resetTodo);
     inputGroup.addEventListener("click",deleteTodoOne);
+    checkedCheckBox();
+
+}
+function checkedCheckBox(){
+    reloadLocalStorage();
+    const checkbox = document.querySelectorAll(".form-check-input");
+    checkbox.addEventListener("click",x);
 }
 
-
+function x(){
+    console.log(checkbox);
+        for(let i = 0; i < todos.length ; i++){
+            if(checkbox[i].checked){
+                console.log("selamlar");
+            }
+        }
+}
 
 function reloadLocalStorage(){
 
@@ -54,21 +68,21 @@ function reloadLocalStorage(){
         labelItem.className = "form-check-label";
         labelItem.for = "flexCheckDefault";
 
-        pItem.className = "p-0 m-0 ms-2 d-inline";
+        pItem.className = "p-0 m-0 ms-2 d-inline texting-color";
         pItem.innerHTML = local[i] ;
  
 
-        closeItem.className = "p-0 m-0 ms-auto d-inline close ";
+        closeItem.className = "p-0 m-0 ms-auto d-inline close closeItem";
         closeItem.setAttribute("style","cursor: pointer");
         closeItem.textContent = "X";
 
-        inputItem.className = "form-check-input flexCheckDefault ";
+        inputItem.className = "form-check-input flexCheckDefault bg-inputComplete";
         inputItem.type = "checkbox";
 
         liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
     }
-
 }
+
 function deleteTodoOneLocalStorage(e){
 
     let local = JSON.parse(localStorage.getItem("todos"));
@@ -88,8 +102,7 @@ function deleteTodoOneLocalStorage(e){
 }
 
 function deleteTodoOne(e){
-    console.log(e.target);
-    if(e.target.className === "p-0 m-0 ms-auto d-inline close "){
+    if(e.target.className === "p-0 m-0 ms-auto d-inline close closeItem"){
         const removeElement = e.target.parentElement;
         removeElement.remove();
         deleteTodoOneLocalStorage(e);
@@ -119,7 +132,7 @@ function addTodoUI(){
         alert("Write Element");
         return;
     }
-
+    else{
     addTodoLocaleStorage(inputValue);
 
     const liItem = document.createElement("li");
@@ -137,22 +150,22 @@ function addTodoUI(){
     labelItem.className = "form-check-label";
     labelItem.for = "flexCheckDefault";
 
-    pItem.className = "p-0 m-0 ms-2 d-inline";
+    pItem.className = "p-0 m-0 ms-2 d-inline texting-color";
     pItem.innerHTML = inputValue.value ;
  
 
-    closeItem.className = "p-0 m-0 ms-auto d-inline close ";
+    closeItem.className = "p-0 m-0 ms-auto d-inline close closeItem";
     closeItem.setAttribute("style","cursor: pointer");
     closeItem.textContent = "X";
 
-    inputItem.className = "form-check-input flexCheckDefault ";
+    inputItem.className = "form-check-input flexCheckDefault bg-inputComplete";
     inputItem.type = "checkbox";
 
 
     inputValue.value = "";
 
     liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
-
+    }
 }
 
 function resetTodo(){
