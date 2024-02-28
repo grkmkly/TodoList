@@ -15,8 +15,14 @@ const resetButton = document.querySelector("#resetButton");
 const inputGroup = document.querySelector("ul");
 const inputValue = document.querySelector("#todoName");
 
+let todos = [];
+
+
 var i = 0;
 runEvents();
+
+window.load = reloadLocalStorage();
+
 function runEvents()
 {
     checktheLocalStorage();
@@ -26,8 +32,12 @@ function runEvents()
 }
 
 
-function checktheLocalStorage(){
-    while(localStorage.getItem(i) != null){
+
+function reloadLocalStorage(){
+
+    let local = JSON.parse(localStorage.getItem("todos"));
+
+    for(let i = 0; i < local.length ; i++){
 
         const liItem = document.createElement("li");
         const inputItem = document.createElement("input");
@@ -45,43 +55,72 @@ function checktheLocalStorage(){
         labelItem.for = "flexCheckDefault";
 
         pItem.className = "p-0 m-0 ms-2 d-inline";
-        pItem.innerHTML = localStorage.getItem(i) ;
+        pItem.innerHTML = local[i] ;
+ 
 
         closeItem.className = "p-0 m-0 ms-auto d-inline close ";
         closeItem.setAttribute("style","cursor: pointer");
         closeItem.textContent = "X";
 
-        inputItem.className = "form-check-input";
+        inputItem.className = "form-check-input flexCheckDefault ";
         inputItem.type = "checkbox";
-        inputItem.id = `flexCheckDefault${i}`;
-        inputItem.value = "";
 
         liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
-        i++;   
     }
+
+}
+function deleteTodoOneLocalStorage(e){
+
+    let local = JSON.parse(localStorage.getItem("todos"));
+    let x =e.target.parentElement.children[2].textContent;
+
+    for(let i = 0; i < local.length;i++ ){
+
+        if(x === local[i]){
+
+            console.log(local[i]);
+            local.splice(i,1);
+            todos = local;
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
+    }
+
 }
 
-function deleteTodoOne(e,i){
+function deleteTodoOne(e){
     console.log(e.target);
     if(e.target.className === "p-0 m-0 ms-auto d-inline close "){
         const removeElement = e.target.parentElement;
         removeElement.remove();
-        --i;
-        localStorage.removeItem(i);
-        console.log(i);
+        deleteTodoOneLocalStorage(e);
     }
 }
-function addTodoLocaleStorage(){
-    localStorage.setItem(i,inputValue.value)
-    inputValue.value = ""; 
-    i++;
+function checktheLocalStorage(){
+
+    if(localStorage.getItem("todos") === null){
+        todos = [];
+        
+    }else{
+        todos = JSON.parse(localStorage.getItem("todos"));
+    }
+}
+function addTodoLocaleStorage(newTodo){
+
+    checktheLocalStorage();
+    todos.push(newTodo.value);
+
+    localStorage.setItem("todos", JSON.stringify(todos));
+
 }
 
 function addTodoUI(){
+
     if(inputValue.value == ""){
         alert("Write Element");
         return;
     }
+
+    addTodoLocaleStorage(inputValue);
 
     const liItem = document.createElement("li");
     const inputItem = document.createElement("input");
@@ -108,27 +147,27 @@ function addTodoUI(){
 
     inputItem.className = "form-check-input flexCheckDefault ";
     inputItem.type = "checkbox";
-    //inputItem.id = `flexCheckDefault${i}` ;
-    inputItem.value = "";
+
+
+    inputValue.value = "";
 
     liItem.className = "list-group-item bg-transparent text-danger d-flex mx-2 p-1 align-items-center ";
-    addTodoLocaleStorage();
+
 }
 
 function resetTodo(){
-    var todos = document.querySelectorAll(".list-group-item");
+    var todoss = document.querySelectorAll(".list-group-item");
 
-    console.log(todos);
-    if(todos === null){
+    if(todoss === null){
         alert("No element");
     }
     else{
-        while(i>0){
-            --i;
-            todos[i].remove();
-            localStorage.removeItem(i);
+        for(let i = 0; i < todos.length ; i++){
+            todoss[i].remove();
         }
-        return;
+        todos = [];
+        localStorage.setItem("todos", JSON.stringify(todos));
+        reloadLocalStorage();
     }
 }
 
