@@ -16,16 +16,13 @@ const inputGroup = document.querySelector("ul");
 const inputValue = document.querySelector("#todoName");
 
 
-let todos = [];
-
 
 var i = 0;
 
 window.load = reloadLocalStorage() + runEvents();
 
 function runEvents()
-{
-    checktheLocalStorage();
+{   
     addButton.addEventListener("click", addTodoUI);
     resetButton.addEventListener("click" ,resetTodo);
     inputGroup.addEventListener("click",deleteTodoOne);
@@ -33,7 +30,6 @@ function runEvents()
 
 }
 function checkedCheckBox(){
-    reloadLocalStorage();
     const checkbox = document.querySelectorAll(".form-check-input");
     checkbox.addEventListener("click",x);
 }
@@ -112,7 +108,6 @@ function checktheLocalStorage(){
 
     if(localStorage.getItem("todos") === null){
         todos = [];
-        
     }else{
         todos = JSON.parse(localStorage.getItem("todos"));
     }
@@ -133,6 +128,7 @@ function addTodoUI(){
         return;
     }
     else{
+
     addTodoLocaleStorage(inputValue);
 
     const liItem = document.createElement("li");
@@ -171,7 +167,7 @@ function addTodoUI(){
 function resetTodo(){
     var todoss = document.querySelectorAll(".list-group-item");
 
-    if(todoss === null){
+    if(todoss.length <= 0){
         alert("No element");
     }
     else{
@@ -180,8 +176,8 @@ function resetTodo(){
         }
         todos = [];
         localStorage.setItem("todos", JSON.stringify(todos));
-        reloadLocalStorage();
     }
+    reloadLocalStorage();
 }
 
 

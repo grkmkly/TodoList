@@ -26,3 +26,6 @@
 .closeItem{
     color: #CD1818;
 }
+.back{
+    background: linear-gradient(135deg,#153677,#4e085f);
+}
